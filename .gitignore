@@ -1,0 +1,36 @@
+# Dev / AI context files
+TASKS.md
+CLAUDE.md
+
+# Dependencies
+node_modules/
+.venv/
+__pycache__/
+*.pyc
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Build output
+.next/
+dist/
+build/
+out/
+
+# User data (never commit user models)
+agent/memory/users/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/
+*.swp
+
+# Logs
+*.log
+npm-debug.log*

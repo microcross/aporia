@@ -3,7 +3,7 @@
 from unittest.mock import patch, MagicMock
 import pytest
 
-from agent.tools.fetch_paper import fetch_paper, NotFoundError, _extract_arxiv_id
+from agent.tools.fetch_paper import fetch_paper, NotFoundError, PaywallError, ParseError, _extract_arxiv_id
 
 FAKE_ARXIV_RESPONSE = """<?xml version="1.0" encoding="UTF-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom" xmlns:arxiv="http://arxiv.org/schemas/atom">
@@ -49,6 +49,42 @@ def test_fetch_paper_arxiv_success():
     assert len(result["sections"]) == 1
 
 
-def test_fetch_paper_not_found_for_non_arxiv():
+def test_fetch_paper_not_found_for_bare_string():
     with pytest.raises(NotFoundError):
-        fetch_paper("https://openreview.net/forum?id=unknown")
+        fetch_paper("some-random-id-that-is-not-arxiv")
+
+
+def _mock_html_resp(html: str, status: int = 200, content_type: str = "text/html"):
+    mock_resp = MagicMock()
+    mock_resp.text = html
+    mock_resp.status_code = status
+    mock_resp.headers = {"content-type": content_type}
+    mock_resp.raise_for_status = MagicMock()
+    return mock_resp
+
+
+def test_fetch_paper_url_extracts_text():
+    html = "<html><head><title>Test Paper</title></head><body><p>This is a long body of text about research. " + "word " * 50 + "</p></body></html>"
+    with patch("agent.tools.fetch_paper.requests.get", return_value=_mock_html_resp(html)):
+        result = fetch_paper("https://example.com/paper")
+    assert result["source"] == "web"
+    assert result["title"] == "Test Paper"
+    assert "research" in result["full_text"]
+
+
+def test_fetch_paper_url_detects_paywall():
+    html = "<html><body><p>Please log in to access the full article. Purchase access to continue.</p></body></html>"
+    with patch("agent.tools.fetch_paper.requests.get", return_value=_mock_html_resp(html)):
+        with pytest.raises(PaywallError):
+            fetch_paper("https://journal.example.com/paper")
+
+
+def test_fetch_paper_url_403_raises_paywall():
+    from requests import HTTPError
+    mock_resp = MagicMock()
+    mock_resp.status_code = 403
+    http_error = HTTPError(response=mock_resp)
+    mock_resp.raise_for_status.side_effect = http_error
+    with patch("agent.tools.fetch_paper.requests.get", return_value=mock_resp):
+        with pytest.raises(PaywallError):
+            fetch_paper("https://journal.example.com/paywalled")

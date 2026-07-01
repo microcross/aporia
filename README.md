@@ -2,7 +2,7 @@
 
 ![Status](https://img.shields.io/badge/status-work%20in%20progress-orange) ![Version](https://img.shields.io/badge/version-0.1.0--alpha-blue)
 
-An agentic learning experience that helps curious people understand advanced topics — sourced from research papers and journals — at their own pace and level.
+An agentic learning experience that helps curious people understand advanced topics — sourced from research papers and journals — at their own pace and level. Aporia means productive confusion, the building block of understanding right before things click. 
 
 ## What It Does
 

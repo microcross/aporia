@@ -79,9 +79,23 @@ export type Topic = {
   summary: string;
   highlights: Highlight[];
   reviews: ReviewCard[];
+  isNew?: boolean; // brand-new topic: no session history yet
 };
 
 export const topics: Topic[] = [
+  {
+    slug: "protein-folding",
+    name: "Protein Folding",
+    accent: "amber",
+    level: 1,
+    xp: 0,
+    lastSession: "New",
+    dueReviews: 0,
+    summary: "",
+    highlights: [],
+    reviews: [],
+    isNew: true,
+  },
   {
     slug: "diffusion-models",
     name: "Diffusion Models",
@@ -232,6 +246,25 @@ export const sampleConversation: ChatMessage[] = [
     role: "agent",
     content:
       "That's the intuitive guess, and it's close — but there's a subtle twist that makes the whole thing work. The network doesn't predict the clean image directly. Instead, at each step it predicts the noise that was added. Reconstructing the clean data is then just subtraction.\n\nWhy do you think predicting the noise might be an easier target than predicting the clean image?",
+  },
+];
+
+// Starter prompts shown on a brand-new topic's first-run empty state.
+export const starterPrompts = [
+  {
+    emoji: "🌱",
+    title: "Start from the basics",
+    sub: "Assume I know nothing and build up",
+  },
+  {
+    emoji: "📄",
+    title: "Find me a great paper",
+    sub: "Pick a foundational one at my level",
+  },
+  {
+    emoji: "📋",
+    title: "I have something to read",
+    sub: "Paste a link, DOI, or arXiv ID",
   },
 ];
 

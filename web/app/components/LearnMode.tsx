@@ -6,9 +6,10 @@ import {
   accentClasses,
   sampleConversation,
   samplePaper,
+  starterPrompts,
 } from "../lib/mock";
 import { Popover, PopoverState } from "./Popover";
-import { SendIcon, CloseIcon, PlusIcon } from "./icons";
+import { SendIcon, CloseIcon, PlusIcon, SparkIcon } from "./icons";
 
 type Props = {
   topic: Topic;
@@ -33,6 +34,10 @@ export function LearnMode({ topic, onHighlightSaved }: Props) {
       x: rect.left,
       y: rect.bottom,
     });
+  }
+
+  if (topic.isNew) {
+    return <EmptyLearnState topic={topic} />;
   }
 
   return (
@@ -146,6 +151,77 @@ export function LearnMode({ topic, onHighlightSaved }: Props) {
           onAutoSaved={onHighlightSaved}
         />
       )}
+    </div>
+  );
+}
+
+// First-run experience for a brand-new topic: no source, no history.
+// Low-friction, single-input welcome per product-vision.md ("just start talking").
+function EmptyLearnState({ topic }: { topic: Topic }) {
+  const a = accentClasses[topic.accent];
+  return (
+    <div className="flex h-full flex-col">
+      <ModeHeader topic={topic}>
+        <span className={`rounded-full ${a.soft} ${a.text} px-3 py-1 text-xs font-bold`}>
+          New topic
+        </span>
+      </ModeHeader>
+
+      <div className="flex flex-1 items-center justify-center overflow-y-auto px-7 py-10">
+        <div className="w-full max-w-xl text-center">
+          <div
+            className={`mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-3xl ${a.soft} ${a.text}`}
+          >
+            <SparkIcon className="h-8 w-8" />
+          </div>
+
+          <h1 className="text-3xl font-extrabold tracking-tight">
+            Let&apos;s explore {topic.name}
+          </h1>
+          <p className="mx-auto mt-3 max-w-md text-[15px] leading-relaxed text-ink-soft">
+            Nothing here yet — and that&apos;s the fun part. Tell me where you&apos;d
+            like to begin, and I&apos;ll meet you at your level. No quiz, no setup.
+          </p>
+
+          {/* Primary input */}
+          <div className="mt-8">
+            <div className="flex items-center gap-2 rounded-2xl border border-line bg-card px-4 py-3 shadow-soft">
+              <input
+                autoFocus
+                placeholder={`What would you like to understand about ${topic.name.toLowerCase()}?`}
+                className="flex-1 bg-transparent text-[15px] outline-none placeholder:text-ink-faint"
+              />
+              <button
+                className={`rounded-xl ${a.bg} p-2 text-white transition hover:opacity-90`}
+              >
+                <SendIcon className="h-4 w-4" />
+              </button>
+            </div>
+          </div>
+
+          {/* Starter suggestions */}
+          <div className="mt-4 grid gap-2.5 sm:grid-cols-3">
+            {starterPrompts.map((s) => (
+              <button
+                key={s.title}
+                className="group rounded-2xl border border-line bg-card/60 p-4 text-left transition hover:border-ink-faint/40 hover:bg-card hover:shadow-soft"
+              >
+                <div className="text-xl">{s.emoji}</div>
+                <div className="mt-2 text-sm font-bold leading-tight">
+                  {s.title}
+                </div>
+                <div className="mt-1 text-xs leading-snug text-ink-faint">
+                  {s.sub}
+                </div>
+              </button>
+            ))}
+          </div>
+
+          <p className="mt-8 text-xs text-ink-faint">
+            Highlights, summaries, and reviews will fill in as you learn.
+          </p>
+        </div>
+      </div>
     </div>
   );
 }

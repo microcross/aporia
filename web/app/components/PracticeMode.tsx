@@ -33,13 +33,17 @@ export function PracticeMode({
             <div
               className={`mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-3xl ${a.soft} text-3xl`}
             >
-              🎉
+              {topic.isNew ? "🌱" : "🎉"}
             </div>
-            <h2 className="text-2xl font-extrabold">All caught up</h2>
+            <h2 className="text-2xl font-extrabold">
+              {topic.isNew ? "No cards yet" : "All caught up"}
+            </h2>
             <p className="mt-2 max-w-sm text-ink-soft">
-              {cards.length === 0
-                ? "Nothing due for review right now. Come back when concepts resurface."
-                : "You cleared every review due for this topic. Nice momentum."}
+              {topic.isNew
+                ? "Concepts you learn become spaced-repetition cards here, scheduled so they resurface right before you'd forget."
+                : cards.length === 0
+                  ? "Nothing due for review right now. Come back when concepts resurface."
+                  : "You cleared every review due for this topic. Nice momentum."}
             </p>
             {done && (
               <button

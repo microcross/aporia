@@ -6,6 +6,31 @@ import { BookmarkIcon } from "./icons";
 
 export function ReviewMode({ topic }: { topic: Topic }) {
   const a = accentClasses[topic.accent];
+
+  const isEmpty = !topic.summary && topic.highlights.length === 0;
+  if (isEmpty) {
+    return (
+      <div className="flex h-full flex-col">
+        <ModeHeader topic={topic} />
+        <div className="flex flex-1 items-center justify-center px-7">
+          <div className="max-w-sm text-center">
+            <div
+              className={`mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-3xl ${a.soft} ${a.text}`}
+            >
+              <BookmarkIcon className="h-7 w-7" />
+            </div>
+            <h2 className="text-2xl font-extrabold">Nothing to review yet</h2>
+            <p className="mt-2 text-ink-soft">
+              As you learn, a running summary builds here and anything you dwell on
+              gets saved as a highlight — automatically. Start a conversation in{" "}
+              <span className="font-bold text-ink">Learn</span> and this fills in.
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="flex h-full flex-col">
       <ModeHeader topic={topic} />

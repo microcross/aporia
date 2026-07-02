@@ -1,0 +1,81 @@
+@import "tailwindcss";
+
+@theme {
+  /* Aporia design tokens — warm, approachable, airy (docs/design-system.md) */
+  --color-paper: #fbf7f2;
+  --color-card: #ffffff;
+  --color-ink: #3a3330;
+  --color-ink-soft: #7a6f68;
+  --color-ink-faint: #a89d95;
+  --color-line: #efe6dc;
+
+  --color-coral: #e2795b;
+  --color-coral-soft: #fbeae3;
+  --color-amber: #d99a2e;
+  --color-amber-soft: #faf0dc;
+  --color-sage: #6f9a66;
+  --color-sage-soft: #eaf2e7;
+  --color-sky: #5f8cb4;
+  --color-sky-soft: #e7eff6;
+  --color-plum: #96549b;
+  --color-plum-soft: #f0eaf7;
+
+  --font-sans: var(--font-nunito), ui-sans-serif, system-ui, sans-serif;
+
+  --shadow-float: 0 8px 30px rgba(58, 51, 48, 0.12);
+  --shadow-soft: 0 2px 12px rgba(58, 51, 48, 0.06);
+}
+
+body {
+  background: var(--color-paper);
+  color: var(--color-ink);
+}
+
+::selection {
+  background: var(--color-amber-soft);
+}
+
+@keyframes slide-in-right {
+  from {
+    opacity: 0;
+    transform: translateX(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes pop-in {
+  from {
+    opacity: 0;
+    transform: scale(0.96) translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes toast-up {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-slide-in-right {
+  animation: slide-in-right 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.animate-pop-in {
+  animation: pop-in 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.animate-toast-up {
+  animation: toast-up 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}

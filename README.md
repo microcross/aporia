@@ -17,6 +17,8 @@ An agentic learning experience that helps curious people understand advanced top
 
 🚧 Early development — agent design phase. Not ready for use.
 
+See [IDEAS.md](IDEAS.md) for a running backlog of ideas we're considering.
+
 ## Repo Structure
 
 ```
